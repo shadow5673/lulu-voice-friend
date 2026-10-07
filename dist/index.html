@@ -81,9 +81,7 @@
       background: rgba(255,255,255,.06); color: var(--muted); font-size: 12px; line-height: 1.55;
     }
     .parent-note strong { color: var(--ink); }
-    #chat { display: none; }
-    #chat.active { display: block; }
-    elevenlabs-convai { display: block; width: 100%; min-height: 470px; }
+    .direct-link { color: #ffe1f0; font-weight: 800; }
     .badge { margin-top: 12px; text-align: center; color: #cbb7d4; font-size: 11px; }
     dialog {
       width: min(calc(100% - 36px), 430px); border: 1px solid rgba(255,255,255,.14);
@@ -117,7 +115,6 @@
       <div class="parent-note"><strong>保護者の方へ：</strong>これは非公式のオリジナルAIキャラクターです。会話は第三者サービスで録音・保存される場合があります。氏名、園・学校、住所、電話番号などは話さないよう、そばで見守ってください。</div>
     </section>
 
-    <section id="chat" class="card" aria-live="polite"></section>
     <div class="badge">非公式・家庭用プロトタイプ｜既存キャラクターとは関係ありません</div>
   </main>
 
@@ -133,25 +130,14 @@
   <script>
     const start = document.querySelector('#start');
     const dialog = document.querySelector('#consent');
-    const chat = document.querySelector('#chat');
-    const starter = document.querySelector('#starter');
-    let mounted = false;
+    const talkUrl = 'https://elevenlabs.io/app/talk-to?agent_id=agent_9601m4az1cw1eynvfgx9asmptgrk';
 
     start.addEventListener('click', () => dialog.showModal());
     document.querySelector('#cancel').addEventListener('click', () => dialog.close());
     document.querySelector('#agree').addEventListener('click', () => {
       dialog.close();
-      starter.hidden = true;
-      chat.classList.add('active');
-      if (!mounted) {
-        const widget = document.createElement('elevenlabs-convai');
-        widget.setAttribute('agent-id', 'agent_9601m4az1cw1eynvfgx9asmptgrk');
-        chat.appendChild(widget);
-        mounted = true;
-      }
-      setTimeout(() => chat.scrollIntoView({behavior: 'smooth', block: 'start'}), 120);
+      window.location.assign(talkUrl);
     });
   </script>
-  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </body>
 </html>
