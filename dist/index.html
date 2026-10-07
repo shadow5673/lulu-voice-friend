@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#24112f" />
+  <title>ルルとおしゃべり</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+      --ink: #fff8ff;
+      --muted: #dfcfe7;
+      --panel: rgba(44, 20, 58, .78);
+      --violet: #a965d7;
+      --pink: #ff8fc8;
+      --gold: #ffd68a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 50% 20%, rgba(188, 105, 224, .35), transparent 36%),
+        radial-gradient(circle at 10% 80%, rgba(255, 117, 189, .18), transparent 34%),
+        linear-gradient(155deg, #140b1d 0%, #281033 52%, #140b1d 100%);
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "✦  ·  ✧  ·  ✦";
+      position: fixed;
+      inset: 5% 0 auto;
+      text-align: center;
+      letter-spacing: 10vw;
+      color: rgba(255, 221, 157, .25);
+      font-size: 22px;
+      pointer-events: none;
+    }
+    main {
+      width: min(100%, 480px);
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 18px max(24px, env(safe-area-inset-bottom));
+      display: grid;
+      align-content: center;
+      gap: 14px;
+    }
+    .hero { text-align: center; }
+    .mascot-wrap {
+      width: min(64vw, 270px);
+      aspect-ratio: 1;
+      margin: 0 auto -8px;
+      display: grid;
+      place-items: center;
+      filter: drop-shadow(0 18px 30px rgba(0,0,0,.38));
+    }
+    .mascot { width: 100%; height: 100%; object-fit: contain; }
+    h1 { margin: 0; font-size: clamp(34px, 9vw, 48px); letter-spacing: .03em; }
+    .tagline { margin: 6px 0 0; color: var(--muted); font-size: 16px; font-weight: 700; }
+    .card {
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 28px;
+      background: var(--panel);
+      box-shadow: 0 18px 60px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.08);
+      backdrop-filter: blur(20px);
+      padding: 20px;
+    }
+    .starter { display: grid; gap: 12px; }
+    .start-button {
+      width: 100%; min-height: 64px; border: 0; border-radius: 999px;
+      padding: 14px 22px; color: #201027; font-size: 20px; font-weight: 900;
+      background: linear-gradient(135deg, var(--gold), #ffadcf 56%, #c891ef);
+      box-shadow: 0 12px 30px rgba(255, 143, 200, .25);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .start-button:active { transform: translateY(1px) scale(.995); }
+    .note { margin: 0; text-align: center; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .parent-note {
+      margin-top: 2px; padding: 12px 14px; border-radius: 18px;
+      background: rgba(255,255,255,.06); color: var(--muted); font-size: 12px; line-height: 1.55;
+    }
+    .parent-note strong { color: var(--ink); }
+    #chat { display: none; }
+    #chat.active { display: block; }
+    elevenlabs-convai { display: block; width: 100%; min-height: 470px; }
+    .badge { margin-top: 12px; text-align: center; color: #cbb7d4; font-size: 11px; }
+    dialog {
+      width: min(calc(100% - 36px), 430px); border: 1px solid rgba(255,255,255,.14);
+      border-radius: 26px; padding: 22px; color: var(--ink); background: #25132f;
+      box-shadow: 0 30px 90px rgba(0,0,0,.55);
+    }
+    dialog::backdrop { background: rgba(8,4,12,.76); backdrop-filter: blur(6px); }
+    dialog h2 { margin: 0 0 10px; font-size: 22px; }
+    dialog p { color: var(--muted); line-height: 1.65; }
+    .dialog-actions { display: grid; gap: 10px; margin-top: 18px; }
+    .agree, .cancel { min-height: 50px; border-radius: 999px; font-weight: 800; font-size: 16px; }
+    .agree { border: 0; background: linear-gradient(135deg, #ffd68a, #ff8fc8); color: #24112f; }
+    .cancel { border: 1px solid rgba(255,255,255,.18); background: transparent; color: var(--ink); }
+    @media (max-height: 720px) {
+      main { align-content: start; }
+      .mascot-wrap { width: min(47vw, 200px); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero" aria-labelledby="title">
+      <div class="mascot-wrap"><img class="mascot" src="./lulu.png" alt="オリジナルキャラクターのルル" /></div>
+      <h1 id="title">ルルとおしゃべり</h1>
+      <p class="tagline">ちょっぴりいたずら、でもやさしい。</p>
+    </section>
+
+    <section id="starter" class="card starter">
+      <button id="start" class="start-button" type="button">🎙️ ルルに でんわする</button>
+      <p class="note">おうちの人といっしょに使ってね。<br />マイクの許可を聞かれたら「許可」を押します。</p>
+      <div class="parent-note"><strong>保護者の方へ：</strong>これは非公式のオリジナルAIキャラクターです。会話は第三者サービスで録音・保存される場合があります。氏名、園・学校、住所、電話番号などは話さないよう、そばで見守ってください。</div>
+    </section>
+
+    <section id="chat" class="card" aria-live="polite"></section>
+    <div class="badge">非公式・家庭用プロトタイプ｜既存キャラクターとは関係ありません</div>
+  </main>
+
+  <dialog id="consent">
+    <h2>おうちの人へ</h2>
+    <p>会話には ElevenLabs の音声AIを使います。音声や会話内容が録音・保存される場合があります。個人情報を話さず、保護者の見守りのもとでお使いください。</p>
+    <div class="dialog-actions">
+      <button id="agree" class="agree" type="button">わかりました。はじめる</button>
+      <button id="cancel" class="cancel" type="button">いまはやめる</button>
+    </div>
+  </dialog>
+
+  <script>
+    const start = document.querySelector('#start');
+    const dialog = document.querySelector('#consent');
+    const chat = document.querySelector('#chat');
+    const starter = document.querySelector('#starter');
+    let mounted = false;
+
+    start.addEventListener('click', () => dialog.showModal());
+    document.querySelector('#cancel').addEventListener('click', () => dialog.close());
+    document.querySelector('#agree').addEventListener('click', () => {
+      dialog.close();
+      starter.hidden = true;
+      chat.classList.add('active');
+      if (!mounted) {
+        const widget = document.createElement('elevenlabs-convai');
+        widget.setAttribute('agent-id', 'agent_9601m4az1cw1eynvfgx9asmptgrk');
+        chat.appendChild(widget);
+        mounted = true;
+      }
+      setTimeout(() => chat.scrollIntoView({behavior: 'smooth', block: 'start'}), 120);
+    });
+  </script>
+  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+</body>
+</html>
