@@ -1,0 +1,18 @@
+{
+  "name": "ルルとおしゃべり",
+  "short_name": "ルル",
+  "description": "こども向けの日本語AIおしゃべり仲間",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1b0a27",
+  "theme_color": "#1b0a27",
+  "icons": [
+    {
+      "src": "./lulu-icon.jpg",
+      "sizes": "1254x1254",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
