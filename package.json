@@ -1,0 +1,16 @@
+{
+  "name": "lulu-voice-friend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@elevenlabs/client": "latest"
+  },
+  "devDependencies": {
+    "vite": "latest"
+  }
+}
