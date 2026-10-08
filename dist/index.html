@@ -67,14 +67,26 @@
       padding: 20px;
     }
     .starter { display: grid; gap: 12px; }
-    .start-button {
-      width: 100%; min-height: 64px; border: 0; border-radius: 999px;
-      padding: 14px 22px; color: #201027; font-size: 20px; font-weight: 900;
-      background: linear-gradient(135deg, var(--gold), #ffadcf 56%, #c891ef);
-      box-shadow: 0 12px 30px rgba(255, 143, 200, .25);
-      -webkit-tap-highlight-color: transparent;
+    .call-title {
+      margin: 0;
+      text-align: center;
+      color: #ffe9f7;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: .02em;
     }
-    .start-button:active { transform: translateY(1px) scale(.995); }
+    .tap-hint {
+      margin: 0;
+      padding: 15px 16px;
+      border-radius: 20px;
+      color: #281332;
+      background: linear-gradient(135deg, var(--gold), #ffadcf 56%, #c891ef);
+      box-shadow: 0 12px 30px rgba(255, 143, 200, .20);
+      text-align: center;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.45;
+    }
     .note { margin: 0; text-align: center; color: var(--muted); font-size: 13px; line-height: 1.55; }
     .parent-note {
       margin-top: 2px; padding: 12px 14px; border-radius: 18px;
@@ -82,21 +94,12 @@
     }
     .parent-note strong { color: var(--ink); }
     .badge { margin-top: 12px; text-align: center; color: #cbb7d4; font-size: 11px; }
-    dialog {
-      width: min(calc(100% - 36px), 430px); border: 1px solid rgba(255,255,255,.14);
-      border-radius: 26px; padding: 22px; color: var(--ink); background: #25132f;
-      box-shadow: 0 30px 90px rgba(0,0,0,.55);
-    }
-    dialog::backdrop { background: rgba(8,4,12,.76); backdrop-filter: blur(6px); }
-    dialog h2 { margin: 0 0 10px; font-size: 22px; }
-    dialog p { color: var(--muted); line-height: 1.65; }
-    .dialog-actions { display: grid; gap: 10px; margin-top: 18px; }
-    .agree, .cancel { min-height: 50px; border-radius: 999px; font-weight: 800; font-size: 16px; }
-    .agree { border: 0; background: linear-gradient(135deg, #ffd68a, #ff8fc8); color: #24112f; }
-    .cancel { border: 1px solid rgba(255,255,255,.18); background: transparent; color: var(--ink); }
     @media (max-height: 720px) {
       main { align-content: start; }
       .mascot-wrap { width: min(47vw, 200px); }
+    }
+    @media (max-width: 520px) {
+      main { padding-bottom: max(112px, calc(env(safe-area-inset-bottom) + 96px)); }
     }
   </style>
 </head>
@@ -109,7 +112,8 @@
     </section>
 
     <section id="starter" class="card starter">
-      <button id="start" class="start-button" type="button">🎙️ ルルに でんわする</button>
+      <p class="call-title">🎙️ ルルに でんわしよう！</p>
+      <p class="tap-hint">みぎしたの むらさきの<br />でんわを おしてね！ ↘</p>
       <p class="note">おうちの人といっしょに使ってね。<br />マイクの許可を聞かれたら「許可」を押します。</p>
       <div class="parent-note"><strong>保護者の方へ：</strong>これは非公式のオリジナルAIキャラクターです。会話は第三者サービスで録音・保存される場合があります。氏名、園・学校、住所、電話番号などは話さないよう、そばで見守ってください。</div>
     </section>
@@ -117,26 +121,12 @@
     <div class="badge">非公式・家庭用プロトタイプ｜既存キャラクターとは関係ありません</div>
   </main>
 
-  <dialog id="consent">
-    <h2>おうちの人へ</h2>
-    <p>会話には ElevenLabs の音声AIを使います。音声や会話内容が録音・保存される場合があります。個人情報を話さず、保護者の見守りのもとでお使いください。</p>
-    <div class="dialog-actions">
-      <button id="agree" class="agree" type="button">わかりました。はじめる</button>
-      <button id="cancel" class="cancel" type="button">いまはやめる</button>
-    </div>
-  </dialog>
+  <elevenlabs-convai
+    agent-id="agent_9601m4az1cw1eynvfgx9asmptgrk"
+    dismissible="false"
+    avatar-image-url="https://storage.googleapis.com/eleven-public-cdn/convai/agent_9601m4az1cw1eynvfgx9asmptgrk/avatar.png"
+  ></elevenlabs-convai>
 
-  <script>
-    const start = document.querySelector('#start');
-    const dialog = document.querySelector('#consent');
-    const talkUrl = 'https://elevenlabs.io/app/talk-to?agent_id=agent_9601m4az1cw1eynvfgx9asmptgrk';
-
-    start.addEventListener('click', () => dialog.showModal());
-    document.querySelector('#cancel').addEventListener('click', () => dialog.close());
-    document.querySelector('#agree').addEventListener('click', () => {
-      dialog.close();
-      window.location.href = talkUrl;
-    });
-  </script>
+  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </body>
 </html>
